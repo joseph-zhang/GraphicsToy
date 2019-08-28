@@ -4,6 +4,9 @@
 using namespace std;
 
 int main() {
+  // Note that here we use C++ IO Redirection
+  // Actually, if we don't do this, another choice is using bash pipe to write to an image file
+  // Like this: ./main >> "ppm_demo.ppm"
   fstream file;
   file.open("ppm_demo.ppm", ios::out);
   streambuf *stream_buffer_cout = cout.rdbuf();
