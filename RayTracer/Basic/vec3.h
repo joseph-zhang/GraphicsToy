@@ -39,12 +39,12 @@ class vec3 {
   inline vec3& operator *=(const float t);
   inline vec3& operator /=(const float t);
 
-  inline float squard_length() const {
+  inline float squared_length() const {
     return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
   }
 
   inline float length() const {
-    return sqrt(this->squard_length());
+    return sqrt(this->squared_length());
   }
 
   inline void make_unit_vector();
