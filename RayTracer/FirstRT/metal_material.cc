@@ -34,13 +34,16 @@ int main() {
   // a small lambertian sphere located at the screen center
   list[0] = new sphere(vec3(0., 0., -2.), 0.5, new lambertian(vec3(0.8, 0.3, 0.3)));
   // a big lambertian sphere
-  list[1] = new sphere(vec3(0.,-100.5, -2), 100., new lambertian(vec3(0.8, 0.8, 0.0)));
+  list[1] = new sphere(vec3(0.,-100.5, -2.), 100., new lambertian(vec3(0.8, 0.8, 0.0)));
   // a metal sphere
   list[2] = new sphere(vec3(1., 0., -2.), 0.5, new metal(vec3(0.8, 0.6, 0.2), 0.3));
   // another metal sphere with different albedo
   list[3] = new sphere(vec3(-1., 0., -2.), 0.5, new metal(vec3(0.8, 0.8, 0.8), 0.8));
   hitable *world = new hitable_list(list, 4);
-  camera cam;
+
+  // the camera setting the same as Basic: camera cam;
+  // keep the camera horizontally.
+  camera cam(vec3(0.,0.,0.), vec3(0.,0.,-1.), vec3(0.,1.,0.), 90, 2.);
 
   for (int j = ny-1; j >= 0; j--) {
     for (int i = 0; i < nx; i++) {
