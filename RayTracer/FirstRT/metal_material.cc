@@ -2,8 +2,8 @@
 #include <cstdlib>
 #include <iostream>
 #include "sphere.h"
-#include "camera.h"
 #include "material.h"
+#include "camera_naive.h"
 #include "hitable_list.h"
 
 vec3 color(const ray& r, hitable* world, int iter) {

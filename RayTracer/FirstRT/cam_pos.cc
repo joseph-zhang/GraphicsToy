@@ -2,8 +2,8 @@
 #include <cstdlib>
 #include <iostream>
 #include "sphere.h"
-#include "camera.h"
 #include "material.h"
+#include "camera_naive.h"
 #include "hitable_list.h"
 
 vec3 color(const ray& r, hitable* world, int iter) {
@@ -32,13 +32,13 @@ int main() {
   std::cout << "P3\n" << nx << " " << ny << "\n255\n";
   hitable *list[4];
   // a small lambertian sphere located at the screen center
-  list[0] = new sphere(vec3(0., 0., -2.), 0.5, new lambertian(vec3(0.8, 0.3, 0.3)));
+  list[0] = new sphere(vec3(0., 0., -1.), 0.5, new lambertian(vec3(0.8, 0.3, 0.3)));
   // a big lambertian sphere
-  list[1] = new sphere(vec3(0.,-100.5, -2.), 100., new lambertian(vec3(0.8, 0.8, 0.0)));
+  list[1] = new sphere(vec3(0.,-100.5, -1.), 100., new lambertian(vec3(0.5, 0.5, 0.5)));
   // a metal sphere
-  list[2] = new sphere(vec3(1., 0., -2.), 0.5, new metal(vec3(0.8, 0.6, 0.2), 0.3));
+  list[2] = new sphere(vec3(1., 0., -1.), 0.5, new metal(vec3(0.8, 0.6, 0.2), 0.3));
   // a glass sphere
-  list[3] = new sphere(vec3(-1., 0., -2.), 0.5, new dielectric(1.5));
+  list[3] = new sphere(vec3(-1., 0., -1.), 0.5, new dielectric(1.5));
 
   hitable *world = new hitable_list(list, 4);
   camera cam(vec3(-2.,2.,1), vec3(0.,0.,-1.), vec3(0.,1.,0.), 90, float(nx)/float(ny));
