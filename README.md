@@ -1,2 +1,2 @@
-# Graphtoy
+# GraphicsToy
 Toys of computer graphics
