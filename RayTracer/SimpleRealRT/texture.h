@@ -38,6 +38,35 @@ class checker_texture : public texture {
   texture* even;
 };
 
+class image_texture : public texture {
+ public:
+  image_texture() {}
+  image_texture(unsigned char* image, int A, int B, int C)
+    : data(image), nx(A), ny(B), nn(C) {}
+  virtual vec3 value(float u, float v, const vec3& p) const;
+
+  // image data as a big array
+  unsigned char* data;
+  int nx, ny, nn;
+};
+
+vec3 image_texture::value(float u, float v, const vec3& p) const {
+  int i = u*nx;
+  // note that the image coordinate and the global coordinate are different
+  // here we minus 0.001 from y to locate at the last row
+  int j = (1-v)*ny - 0.001;
+  if (i < 0) i = 0;
+  if (j < 0) j = 0;
+  if (i > nx-1) i = nx-1;
+  if (j > ny-1) j = ny-1;
+
+  // convert 1-d array to the corresponding 2-d
+  float r = int(data[nn*nx*j+0 + nn*i]) / 255.0;
+  float g = int(data[nn*nx*j+1 + nn*i]) / 255.0;
+  float b = int(data[nn*nx*j+2 + nn*i]) / 255.0;
+  return vec3(r,g,b);
+}
+
 class value_noise_texture : public texture {
  public:
   value_noise_texture() {}

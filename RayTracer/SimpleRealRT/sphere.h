@@ -4,6 +4,7 @@
 hitable class sphere.
  */
 
+#include <cmath>
 #include "hitable.h"
 
 class sphere: public hitable {
@@ -12,6 +13,7 @@ class sphere: public hitable {
   sphere(vec3 cen, float r, material* m) : center(cen), radius(r), mat_ptr(m) {}
   virtual bool hit(const ray &r, float t_min, float t_max, hit_record &rec) const;
   virtual bool bounding_box(float t0, float t1, aabb& box) const;
+  static void get_uv(const vec3& p, float& u, float& v);
   vec3 center;
   float radius;
   material* mat_ptr;
@@ -22,6 +24,13 @@ bool sphere::bounding_box(float t0, float t1, aabb& box) const {
   box = aabb(center - vec3(radius, radius, radius),
              center + vec3(radius, radius, radius));
   return true;
+}
+
+void sphere::get_uv(const vec3& p, float& u, float& v) {
+  float phi = atan2(p.z(), p.x());
+  float theta = asin(p.y());
+  u = 1 - (phi + M_PI) / (2*M_PI);
+  v = (theta + M_PI/2) / (M_PI);
 }
 
 bool sphere::hit(const ray &r, float t_min, float t_max, hit_record &rec) const {
@@ -37,6 +46,7 @@ bool sphere::hit(const ray &r, float t_min, float t_max, hit_record &rec) const 
     if (temp < t_max && temp > t_min) {
       rec.t = temp;
       rec.p = r.point_at_parameter(rec.t);
+      get_uv((rec.p-center)/radius, rec.u, rec.v);
       rec.normal = (rec.p - center) / radius;
       rec.mat_ptr = mat_ptr;
       return true;
@@ -46,6 +56,7 @@ bool sphere::hit(const ray &r, float t_min, float t_max, hit_record &rec) const 
     if (temp < t_max && temp > t_min) {
       rec.t = temp;
       rec.p = r.point_at_parameter(rec.t);
+      get_uv((rec.p-center)/radius, rec.u, rec.v);
       rec.normal = (rec.p - center) / radius;
       rec.mat_ptr = mat_ptr;
       return true;
@@ -62,6 +73,7 @@ class moving_sphere: public hitable {
 
   virtual bool hit(const ray& r, float tmin, float max, hit_record& rec) const;
   virtual bool bounding_box(float t0, float t1, aabb& box) const;
+  static void get_uv(const vec3& p, float& u, float& v);
   vec3 center(float time) const;
 
   vec3 center0, center1;
@@ -83,6 +95,13 @@ bool moving_sphere::bounding_box(float t0, float t1, aabb& box) const {
   return true;
 }
 
+void moving_sphere::get_uv(const vec3& p, float& u, float& v) {
+  float phi = atan2(p.z(), p.x());
+  float theta = asin(p.y());
+  u = 1 - (phi + M_PI) / (2*M_PI);
+  v = (theta + M_PI/2) / (M_PI);
+}
+
 bool moving_sphere::hit(const ray &r, float t_min, float t_max, hit_record& rec) const {
   // the ray is very fast
   vec3 oc = r.origin() - center(r.time());
@@ -97,6 +116,7 @@ bool moving_sphere::hit(const ray &r, float t_min, float t_max, hit_record& rec)
     if (temp < t_max && temp > t_min) {
       rec.t = temp;
       rec.p = r.point_at_parameter(rec.t);
+      get_uv((rec.p-center(r.time()))/radius, rec.u, rec.v);
       rec.normal = (rec.p - center(r.time())) / radius;
       rec.mat_ptr = mat_ptr;
       return true;
@@ -106,6 +126,7 @@ bool moving_sphere::hit(const ray &r, float t_min, float t_max, hit_record& rec)
     if (temp < t_max && temp > t_min) {
       rec.t = temp;
       rec.p = r.point_at_parameter(rec.t);
+      get_uv((rec.p-center(r.time()))/radius, rec.u, rec.v);
       rec.normal = (rec.p - center(r.time())) / radius;
       rec.mat_ptr = mat_ptr;
       return true;
