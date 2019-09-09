@@ -13,6 +13,12 @@ vec3 random_in_unit_sphere() {
   return p;
 }
 
+vec3 random_on_unit_sphere() {
+	vec3 res = random_in_unit_sphere();
+	res.make_unit_vector();
+	return res;
+}
+
 vec3 reflect(const vec3& v, const vec3& n) {
   return v - 2 * dot(v, n) * n;
 }
@@ -52,7 +58,7 @@ class lambertian : public material {
   lambertian(texture* a) : albedo(a) {}
   virtual bool scatter(const ray& r_in, const hit_record& rec,
                        vec3& attenuation, ray& scattered) const {
-    vec3 target = rec.p + rec.normal + random_in_unit_sphere();
+    vec3 target = rec.p + rec.normal + random_on_unit_sphere();
     scattered = ray(rec.p, target - rec.p, r_in.time());
     attenuation = albedo->value(rec.u, rec.v, rec.p);
     return true;
@@ -70,7 +76,7 @@ class metal : public material {
   virtual bool scatter(const ray& r_in, const hit_record& rec,
                        vec3& attenuation, ray& scattered) const {
     vec3 reflected = reflect(unit_vector(r_in.direction()), rec.normal);
-    scattered = ray(rec.p, reflected + fuzz*random_in_unit_sphere(), r_in.time());
+    scattered = ray(rec.p, reflected + fuzz*random_on_unit_sphere(), r_in.time());
     attenuation = albedo;
     return (dot(scattered.direction(), rec.normal) > 0);
   }
