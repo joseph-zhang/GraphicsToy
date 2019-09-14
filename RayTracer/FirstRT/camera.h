@@ -21,7 +21,9 @@ class camera {
     lens_radius = aperture / 2.;
     // vertival field of view, the angle
     float theta = vfov * M_PI / 180;
-    // unit half_height, when focus_dist = 1.0
+    // unit half_height, when focus_dist = 1.0.
+    // Note that focus distance is just the distance between the virtual camera origin and the canvas(screen),
+    // which is different from focal length, they are not the same!
     float half_height = tan(theta/2);
     float half_width = aspect * half_height;
 
