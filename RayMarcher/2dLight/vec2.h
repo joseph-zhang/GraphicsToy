@@ -90,6 +90,13 @@ inline float dot(const vec2& v1, const vec2& v2) {
   return dot(v1.vec, v2.vec);
 }
 
+// Note that this is not actual cross product.
+// 2D cross returns the magnitude of the vector
+// that would result from a regular 3D cross product of the input vectors.
+inline float cross(const vec2& v1, const vec2& v2) {
+  return v1.x()*v2.y() - v1.y()*v2.x();
+}
+
 inline vec2& vec2::operator+=(const vec2& v) {
   vec += v.vec;
   return *this;
