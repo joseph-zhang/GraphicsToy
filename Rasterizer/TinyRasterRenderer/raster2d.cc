@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
   vec3* framebuffer = new vec3[nx * ny];
 
   float s = edgeFunction(v0, v1, v2);
-  for (int j = ny-1; j >= 0; j--) {
+  for (int j = 0; j < ny; j++) {
     for (int i = 0; i < nx; i++) {
       // for every sample point on canvas
       vec2 p((i + 0.5)/nx, (ny-j-1 + 0.5)/ny);
