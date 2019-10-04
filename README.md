@@ -1,2 +1,2 @@
 # GraphicsToy
-Toys of computer graphics
+CG Learning -- Toys of computer graphics.
